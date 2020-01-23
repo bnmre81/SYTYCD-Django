@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Item
+from .models import Item, Restaurant
 from .forms import RestaurantForm, ItemForm, SignupForm, SigninForm
 from django.contrib.auth import login, authenticate, logout
 from django.db.models import Q
@@ -25,9 +25,9 @@ def signup(request):
     return render(request, 'signup.html', context)
 
 def signin(request):
-    form = LoginForm()
+    form = SigninForm()
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = SigninForm(request.POST)
         if form.is_valid():
 
             username = form.cleaned_data['username']
@@ -62,7 +62,7 @@ def restaurant_list(request):
 
 
 def restaurant_detail(request, restaurant_id):
-    restaurant = Restaurant.objects.get(id=res_id)
+    restaurant = Restaurant.objects.get(id=restaurant_id)
     items = Item.objects.filter(restaurant=restaurant)
     context = {
         "restaurant": restaurant,
